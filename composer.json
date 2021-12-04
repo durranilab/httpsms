@@ -1,0 +1,17 @@
+{
+    "name": "durranilab/httpsms",
+    "description": "Indian SMS Providers HTTP SMS API for GET/POST Methods",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Durranilab\\Httpsms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Musaddiq Durrani",
+            "email": "contact@durranilab.com"
+        }
+    ],
+    "require": {}
+}
