@@ -2,14 +2,10 @@
     "name": "durranilab/httpsms",
     "description": "Indian SMS Providers HTTP SMS API for GET/POST Methods",
     "license": "MIT",
+    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "Durranilab\\Httpsms\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Durranilab\\Httpsms\\Tests\\": "tests/"
         }
     },
     "authors": [
