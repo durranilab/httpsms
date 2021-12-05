@@ -1,4 +1,7 @@
 # Laravel HTTP SMS Sender
+![image](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+[![Latest Stable Version](http://poser.pugx.org/durranilab/httpsms/v)](https://packagist.org/packages/durranilab/httpsms)
+[![License](http://poser.pugx.org/durranilab/httpsms/license)](https://packagist.org/packages/durranilab/httpsms)
 ##### Easy HTTP (GET/POST) SMS Package for Indian SMS Service Providers.
 
 **Features**
