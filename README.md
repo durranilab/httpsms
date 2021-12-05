@@ -1,4 +1,4 @@
-# HTTP SMS SENDER
+# Laravel HTTP SMS Sender
 ##### Easy HTTP (GET/POST) SMS Package for Indian SMS Service Providers.
 
 **Features**
