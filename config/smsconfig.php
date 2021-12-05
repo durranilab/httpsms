@@ -4,7 +4,7 @@
 return [
 
     // HTTP METHOD (get/post)
-    // 'method' => 'get', (Currently GET supported)
+    'method' => 'get',
 
     //SMS URL (FOR SENDING SMS)
     'sms_url' => 'http://www.alots.in/sms-panel/api/http/index.php',

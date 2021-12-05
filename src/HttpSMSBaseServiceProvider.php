@@ -20,8 +20,8 @@ class HttpSMSBaseServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton('MessageSender', function ($app) {
-            return new \Durranilab\Httpsms\MessageSender();
+        $this->app->singleton('HttpSMS', function () {
+            return new HttpSMS();
         });
     }
 }
