@@ -7,11 +7,28 @@
             "Durranilab\\Httpsms\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Durranilab\\Httpsms\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Musaddiq Durrani",
             "email": "contact@durranilab.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "orchestra/testbench": "^6.23"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Durranilab\\Httpsms\\HttpSMSBaseServiceProvider"
+            ]
+        }
+    },
+  "require": {
+    "ext-curl": "*"
+  }
 }
