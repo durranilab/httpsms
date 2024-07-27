@@ -6,84 +6,78 @@ namespace Durranilab\Httpsms;
 
 class HttpSMS
 {
+    private $method;
+    private $balanceUrl;
+    private $balanceParams;
+    private $smsUrl;
+    private $smsParams;
+
+    public function __construct()
+    {
+        $this->method = config('smsconfig.method');
+        $this->balanceUrl = config('smsconfig.balance_url');
+        $this->balanceParams = config('smsconfig.balance_params');
+        $this->smsUrl = config('smsconfig.sms_url');
+        $this->smsParams = config('smsconfig.sms_params');
+    }
 
     public function getBalance($userParams = [])
     {
-        if (config('smsconfig.method') === 'get') {
-            // Generate URL with (Query) from Params
-            $url = config('smsconfig.balance_url') . '?';
-            $params = config('smsconfig.balance_params');
-            return $this->requestCurlGet($url, $params, $userParams);
-        }
-        if (config('smsconfig.method') === 'post') {
-            $url = config('smsconfig.balance_url');
-            $params = config('smsconfig.balance_params');
-            return $this->requestCurlPost($url, $params, $userParams);
-        }
-        return "Please insert valid request method in config file (SMS CONFIG)";
+        return $this->makeRequest($this->balanceUrl, $this->balanceParams, $userParams);
     }
 
     public function sendMessage($userParams = [])
     {
-        if (config('smsconfig.method') === 'get') {
-            // Generate URL with (Query) from Params
-            $url = config('smsconfig.sms_url') . '?';
-            $params = config('smsconfig.sms_params');
-            return $this->requestCurlGet($url, $params, $userParams);
-        }
-        if (config('smsconfig.method') === 'post') {
-            // Generate URL with (Query) from Params
-            $url = config('smsconfig.sms_url');
-            $params = config('smsconfig.sms_params');
-            return $this->requestCurlPost($url, $params, $userParams);
-        }
-        return "Please insert valid request method in config file (SMS CONFIG)";
+        return $this->makeRequest($this->smsUrl, $this->smsParams, $userParams);
     }
 
+    private function makeRequest($url, $params, $userParams)
+    {
+        if ($this->method === 'get') {
+            return $this->requestCurlGet($url, $params, $userParams);
+        } elseif ($this->method === 'post') {
+            return $this->requestCurlPost($url, $params, $userParams);
+        }
+        return "Please insert a valid request method in the config file (SMS CONFIG)";
+    }
 
     private function requestCurlGet($url, $params, $userParams)
     {
-        // params from Config file
-        if ($params != null)
-            foreach ($params as $key => $value) {
-                $url = $url . '&' . $key . '=' . $value;
-            }
+        $query = http_build_query(array_merge($params, $userParams));
+        $finalUrl = rtrim($url, '?') . '?' . $query;
 
-        // user params
-        if ($userParams != null)
-            foreach ($userParams as $key => $value) {
-                $url = $url . '&' . $key . '=' . $value;
-            }
+        $finalUrl = str_replace([" ", "\n"], ["%20", "%0A"], $finalUrl);
 
-        $url = preg_replace("/ /", "%20", $url);
-        $url = preg_replace("/\n/", "%0A", $url);
-
-        //cURL HTTP GET
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_URL, $finalUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
-        //$err = curl_error($ch);  //if you need
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            return "Curl error: $error";
+        }
         curl_close($ch);
         return $response;
     }
 
     private function requestCurlPost($url, $params, $userParams)
     {
+        $postFields = array_merge($params, $userParams);
 
-        $post = array_merge($params, $userParams);
-        //cURL HTTP POST
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
         $response = curl_exec($ch);
-       // $err = curl_errno($ch);
-        curl_close($ch); //if you need
-
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            return "Curl error: $error";
+        }
+        curl_close($ch);
         return $response;
-
     }
 }
